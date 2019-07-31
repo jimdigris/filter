@@ -29,7 +29,10 @@
 	]
 	
 	const filtersWrap = document.querySelector('.filter_wrap');
-
-	console.log(base[3].width);
+	const templItemCard = filtersWrap.querySelector('#templItemCard');
+	
+	function drawItemsCards () {
+		
+	}
 
 })();
