@@ -5,7 +5,17 @@
 }
 
 .filter_wrap .itemCard {
-	
+    background: #ffffff;
+    width: 20%;
+    border: 2px solid #bdb8b8;
+    padding: 25px;
+    box-sizing: border-box;
+	margin: 10px;
+    float: left;
+}
+
+.filter_wrap .itemCard:hover {
+	border: 2px solid red;
 }
 
 .filter_wrap .itemTitle{
@@ -13,5 +23,11 @@
 }
 
 .filter_wrap img {
-	
+    width: 100%;	
+}
+
+.filter_wrap .itemContent {
+	width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;	
 }
