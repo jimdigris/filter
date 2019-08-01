@@ -38,17 +38,23 @@
 		}		
 	]
 	
-	const filtersWrap = document.querySelector('.filter_wrap');
-	const templItemCard = filtersWrap.querySelector('#templItemCard').content.querySelector('.itemCard');
+	const filterWrap = document.querySelector('.filterWrap');
+	const templateProduct = filterWrap.querySelector('#templateProduct').content.querySelector('.product');
 	
-	drawItemsCards ();
-	function drawItemsCards () {
+	const filterElements = {
+		criterions: filterWrap.querySelector('.criterions'),
+		products: filterWrap.querySelector('.products'),
+		buttonExecute: filterWrap.querySelector('.buttonExecute')
+	};
+	
+	drawAllProducts ();
+	function drawAllProducts () {
 		for (let i = 0; i < base.length; i++) {
-			let card = templItemCard.cloneNode(true);
-			card.querySelector('.itemTitle').textContent = base[i].title;
-			card.querySelector('.itemImage').src = base[i].img;
-			card.querySelector('.itemContent').textContent = base[i].content;
-			filtersWrap.appendChild(card);
+			let product = templateProduct.cloneNode(true);
+			product.querySelector('.title').textContent = base[i].title;
+			product.querySelector('.image').src = base[i].img;
+			product.querySelector('.content').textContent = base[i].content;
+			filterElements.products.appendChild(product);
 		}
 	}
 

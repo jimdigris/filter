@@ -23,17 +23,28 @@
 </head>
 <body>
 
-	<div class="filter_wrap">
+	<div class="filterWrap">
 	
+		<div class="criterions">
+			<div class="criterion">
+				<input type="checkbox" id="option_1" name="option_1" value="10"> Масса 10
+				<input type="checkbox" id="option_2" name="option_2" value="20"> Масса 20
+				<input type="checkbox" id="option_3" name="option_3" value="30"> Масса 30
+				<input type="checkbox" id="option_4" name="option_4" value="40"> Масса 40
+				<input type="checkbox" id="option_5" name="option_5" value="50"> Масса 50
+			</div>
+		</div>		
+		<button class="buttonExecute">Фильтровать</button>
 		
-	
 		<hr>
+		
+		<div class="products"></div>
 	
-		<template id="templItemCard">
-			<div class="itemCard">
-				<div class="itemTitle">dd</div>
-				<img class="itemImage" src="" atl="">
-				<div class="itemContent">dddd</div>
+		<template id="templateProduct">
+			<div class="product">
+				<div class="title"></div>
+				<img class="image" src="" atl="">
+				<div class="content"></div>
 			</div>
 		</template>
 	</div>
