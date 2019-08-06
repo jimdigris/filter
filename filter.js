@@ -93,12 +93,27 @@
 	}
 	
 	function filteringProducts (filteringСriteria) {
-		console.log(filteringСriteria);
+		let needFiltering = false;
 		
-		// удаляем текущие продукты
-		while (filterElements.products.firstChild) {
-			filterElements.products.removeChild(filterElements.products.firstChild);
+		// проверяем есть ли критерии для фильтрации
+		for (let key in filteringСriteria) {	
+			needFiltering = (filteringСriteria[key].length > 0) ? true : false;
+			if (needFiltering) {
+				clearProductOutput();
+				break;
+			} else {
+				clearProductOutput();
+				drawAllProducts ();
+			}
 		}
+
+		function clearProductOutput() {
+			while (filterElements.products.firstChild) {
+				filterElements.products.removeChild(filterElements.products.firstChild);
+			}
+		}
+		
+
 	}
 
 
