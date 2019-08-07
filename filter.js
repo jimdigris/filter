@@ -58,20 +58,37 @@
 	// ---
 
 	function onButtonExecuteClick () {
-		let criterions = collectCriteria ();	// сбор и группирвка отмеченных критериев для фильтрации
-		filteringProducts (criterions);			// фильтрация продуктов/товаров
+		let criterions = collectCriteria ();				// сбор и группировка отмеченных критериев для фильтрации
+		let needFiltering = getNeedFiltering (criterions);	// узнать нужно ли фильтровать
+		
+		if (needFiltering) {
+			clearProductOutput();
+			let filteredProducts =  filteringProducts (criterions);		// фильтрация продуктов/товаров
+			drawProducts (filteredProducts);
+		} else {
+			clearProductOutput();
+			drawProducts (base);
+		};
 	}	
+	
+	// ---
 
-	drawAllProducts ();
-	function drawAllProducts () {
-		for (let i = 0; i < base.length; i++) {
+	drawProducts (base);
+	function drawProducts (products) {
+		for (let i = 0; i < products.length; i++) {
 			let product = templateProduct.cloneNode(true);
-			product.querySelector('.title').textContent = base[i].title;
-			product.querySelector('.image').src = base[i].img;
-			product.querySelector('.content').textContent = base[i].content;
+			product.querySelector('.title').textContent = products[i].title;
+			product.querySelector('.image').src = products[i].img;
+			product.querySelector('.content').textContent = products[i].content;
 			filterElements.products.appendChild(product);
 		}
 	}
+	
+	function clearProductOutput() {
+		while (filterElements.products.firstChild) {
+			filterElements.products.removeChild(filterElements.products.firstChild);
+		}
+	}	
 	
 	function collectCriteria () {
 		let criterionsAll = {};
@@ -92,30 +109,18 @@
 		return criterionsAll;
 	}
 	
-	function filteringProducts (filteringСriteria) {
-		let needFiltering = false;
-		
-		// проверяем есть ли критерии для фильтрации
-		for (let key in filteringСriteria) {	
-			needFiltering = (filteringСriteria[key].length > 0) ? true : false;
-			if (needFiltering) {
-				clearProductOutput();
-				break;
-			} else {
-				clearProductOutput();
-				drawAllProducts ();
-			}
+	function getNeedFiltering (filteringСriteria) {
+		let need = false;
+		for (let key in filteringСriteria) {
+			need = (filteringСriteria[key].length > 0) ? true : false;			
+			if (need) {break;};			
 		}
-
-		function clearProductOutput() {
-			while (filterElements.products.firstChild) {
-				filterElements.products.removeChild(filterElements.products.firstChild);
-			}
-		}
-		
-
+		return need;
 	}
-
+	
+	function filteringProducts (filteringСriteria) {
+		
+	}
 
 })();
 
