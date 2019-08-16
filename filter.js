@@ -1,5 +1,5 @@
 // "Фильтр"
-// 15-08-2019
+// 16-08-2019
 
 /* - Логика скрипта -
 
@@ -32,7 +32,7 @@
 'use strict';
 
 (function () {
-	
+
 	let base = [
 		{
 			id: 1,
@@ -107,19 +107,21 @@
 			height: 300
 		}		
 	]
-	
+
 	const filterWrap = document.querySelector('.filterWrap');
 	const filterElements = {
 		criterions: filterWrap.querySelector('.criterions').querySelectorAll('.criterion'),
 		products: filterWrap.querySelector('.products'),
-		buttonExecute: filterWrap.querySelector('.buttonExecute')
+		buttonExecute: filterWrap.querySelector('.buttonExecute'),
+		buttonClean: filterWrap.querySelector('.buttonClean')
 	};
 	const templateProduct = filterWrap.querySelector('#templateProduct').content.querySelector('.product');	
-	
+
 	// ---
-	
-	filterElements.buttonExecute.addEventListener('click', onButtonExecuteClick);	
-	
+
+	filterElements.buttonExecute.addEventListener('click', onButtonExecuteClick);
+	filterElements.buttonClean.addEventListener('click', onButtonCleanClick);
+
 	// ---
 
 	function onButtonExecuteClick () {
@@ -127,15 +129,21 @@
 		let needFiltering = getNeedFiltering (criterions);	// узнать нужно ли фильтровать
 		
 		if (needFiltering) {
-			clearProductOutput();
+			clearProductOutput ();
 			let filteredProducts =  filteringProducts (criterions);		// фильтрация продуктов/товаров. сбор нового массива продуктов.
 			drawProducts (filteredProducts);							// вывод/отрисовка отфильтрованных продуктов
 		} else {
-			clearProductOutput();
+			clearProductOutput ();
 			drawProducts (base);
-		};
+		}
 	}	
-	
+
+	function onButtonCleanClick () {
+		clearCheckbox ();
+		clearProductOutput ();
+		drawProducts (base);
+	}
+
 	// ---
 
 	drawProducts (base);	// вывод/отрисовка всех продуктов
@@ -148,19 +156,30 @@
 			filterElements.products.appendChild(product);
 		}
 	}
-	
+
 	function clearProductOutput() {
 		while (filterElements.products.firstChild) {
 			filterElements.products.removeChild(filterElements.products.firstChild);
 		}
-	}	
-	
+	}
+
+	function clearCheckbox () {
+		for (let i = 0; i < filterElements.criterions.length; i++) {
+			let optionsElements = filterElements.criterions[i].querySelectorAll('input');
+			for (let j = 0; j < optionsElements.length; j++) {
+				if (optionsElements[j].checked) {
+					optionsElements[j].checked = false;
+				}
+			}
+		}
+	}
+
 	function collectCriteria () {
 		let criterionsAll = {};
-		
+
 		// перебираем все критерии (блоки с чекбоксами объединенные по смыслу)
 		for (let i = 0; i < filterElements.criterions.length; i++) {
-			
+
 			// перебираем все опции (чекбоксы) текущего критерия
 			let optionsElements = filterElements.criterions[i].querySelectorAll('input');
 			let optionsAll = [];
@@ -173,12 +192,12 @@
 		}		
 		return criterionsAll;
 	}
-	
+
 	function getNeedFiltering (filteringСriteria) {
 		let need = false;
 		for (let key in filteringСriteria) {
 			need = (filteringСriteria[key].length > 0) ? true : false;			
-			if (need) {break;};			
+			if (need) {break;}	
 		}
 		return need;
 	}
@@ -192,7 +211,6 @@
 		Задача:	отмечены сл пункты фильтра: масса 10 и высота 200
 		Итог: будут показаны оба товара, т.к. каждый попадает хоть под один критерий.
 	--- 
-	
 	function filteringProducts (filteringСriteria) {
 		let filteredProducts = [];
 		
@@ -226,7 +244,7 @@
 									if (base[i].id == filteredProducts[ii].id) {
 										existence = true;
 										break;
-									};									
+									}					
 								}									
 								if (existence === false) {filteredProducts.push(base[i]);}											
 							}
@@ -248,28 +266,28 @@
 				"третий товар": масса 10, высота 200;
 		Задача:	отмечены сл пункты фильтра: масса 10 и высота 200
 		Итог: будет показан только третий товар, т.к. соответствует всем заданным фильтрам
-	---*/	
+	---	*/
 	function filteringProducts (filteringСriteria) {
 		let filteredProducts = [];	// отфильтрованные продукты
 		let removableProducts = [];	// продукты, которые не прошли фильтрацию
-		
+
 		// перебираем каждый продукт и создаем список удаляемых/не попадающих под фильтр
 		for (let i = 0; i < base.length; i++) {
-			
+
 			// перебираем каждое свойство продукта
 			for (let keyProduct in base[i]) {
-				
+
 				// сравниваем названия свойства продукта "keyProduct" с названием критерия фильтрации "keyCriteria"
 				// путем перебора критериев
 				for (let keyCriteria in filteringСriteria) {
-					
+
 					// если критерий пустой, то переходим к сл шагу цикла
 					if (filteringСriteria[keyCriteria].length === 0) {continue;}
-					
+
 					// если название свойства продукта такое же как и название критерия
 					if (keyProduct === keyCriteria) {
 						let deletion = true;	// по умолчанию помечаем продукт на удаление из выводимого списка
-						
+
 						// сравниваем значение свойства продукта со значениями критерия
 						// тот самый момент сравнения параметров
 						for (let j = 0; j < filteringСriteria[keyCriteria].length; j++) {
@@ -289,7 +307,7 @@
 								if (base[i].id == removableProducts[ii].id) {
 									existence = true;
 									break;
-								};									
+								}							
 							}									
 							if (existence === false) {removableProducts.push(base[i]);}	
 						}
@@ -297,7 +315,7 @@
 				}			
 			}
 		}
-		
+
 		// создаем список выводимых продуктов, отавшихся после фильтрации
 		for (let i = 0; i < base.length; i++) {			
 			let existence = false;			
@@ -309,17 +327,7 @@
 			}
 			if (existence === false) {filteredProducts.push(base[i]);}	
 		}
-		
+
 		return filteredProducts;
-	}	
-
+	}
 })(); 
-
-
-
-
-
-
-
-
-
